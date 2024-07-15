@@ -37,10 +37,10 @@ from sqlalchemy.orm import Session
 from .database.database import get_db
 from fastapi.responses import HTMLResponse,RedirectResponse
 from fastapi.templating import Jinja2Templates
-from .schemas.authenticate import Token,TokenData,SignUp,Login
-from .schemas.user import User,UserInDB,CreateUser
+from .schemas.authenticate import Token,TokenData,SignUp
+from .schemas.user import User,UserInDB
 
-from .models.models import Users,Movies,News,Ratings,Watchlist
+from .models.models import Users,Movies,News,Watchlist
 
 from scraper import scrape_news
 
@@ -137,15 +137,6 @@ async def login_for_access_token(
     )
     return Token(access_token=access_token, token_type="bearer")
 
-@app.get("/users/me")
-async def read_users_me(request: Request, current_user: Annotated[User, Depends(get_current_active_user)]):
-    print(current_user)
-    return current_user
-
-
-
-
-
 templates = Jinja2Templates(directory="frontend")
 
 @app.get("/login", response_class=HTMLResponse)
@@ -180,6 +171,10 @@ form_data: SignUp = Depends(SignUp.as_form)
     """
     Handles the signup form submission.
     """
+    check = db.query(Users).filter(Users.username == form_data.username).first()
+    if check:
+        return templates.TemplateResponse("login.html", {"request": request,"error":"user already registered"})
+
     hashed_password = get_password_hash(form_data.password)
     new_user = Users(hashed_password=hashed_password,
         name=form_data.name, username=form_data.username, 
@@ -209,7 +204,7 @@ async def protected_home(request: Request,background_task:BackgroundTasks,curren
     unique_ott_list = db.query(Movies.ott).distinct().all()
     unique_ott_list = [ott[0] for ott in unique_ott_list if ott[0] not in ('', '(', ')')]
 
-    background_task.add_task(scrape_news.scrape)  # Run the scrape function in the background
+    background_task.add_task(scrape_news.scrape)
     news = db.query(News).all()
 
     user = db.query(Users).filter(Users.username == current_user.username).first()
