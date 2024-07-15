@@ -25,7 +25,7 @@ class Watchlist(Base):
     watchlist_id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey('users.user_id'))
     movie_id = Column(Integer, ForeignKey('movies.index'))
-    users = relationship('User', back_populates='watchlist')
+    users = relationship('Users', back_populates='watchlist')
     movie = relationship('Movies', back_populates='watchlist')
 
 class Movies(Base):
@@ -61,7 +61,7 @@ class Ratings(Base):
     rating = Column(Float)
     movie = relationship('Movies', back_populates='raters')
 
-class User(Base):
+class Users(Base):
     """
     Model for the users table.
     """
@@ -69,5 +69,5 @@ class User(Base):
     user_id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     username = Column(String)
-    password = Column(String)
+    hashed_password = Column(String)
     watchlist = relationship('Watchlist', back_populates='users')

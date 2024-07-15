@@ -28,7 +28,7 @@ def handle_signup(
     """
     Handles the signup form submission.
     """
-    new_user = models.User(
+    new_user = models.Users(
         name=form_data.name, username=form_data.username, password=form_data.password
     )
     db.add(new_user)
@@ -53,7 +53,7 @@ def handle_login(
     """
     Handles the login form submission.
     """
-    user = db.query(models.User).filter(models.User.username == formdata.username).first()
+    user = db.query(models.Users).filter(models.Users.username == formdata.username).first()
     if user and formdata.password == user.password:
         return RedirectResponse(url=f"/home/{user.user_id}", status_code=303)
     return template.TemplateResponse("login.html",
