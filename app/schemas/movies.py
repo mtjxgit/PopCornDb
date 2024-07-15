@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-class movies(BaseModel):
+class Movie(BaseModel):
     title : str
     rating: str
     image_url : str
