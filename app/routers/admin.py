@@ -9,7 +9,7 @@ from fastapi import Depends, Form, APIRouter
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from app.database.database import get_db
-from app import models
+from app.models import models
 from app.schemas import movies as schemas
 
 router = APIRouter(prefix="/admin", tags=["Admin"])

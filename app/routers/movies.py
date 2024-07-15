@@ -8,7 +8,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from ..database.database import get_db
-from .. import models
+from ..models import models
 
 router = APIRouter(prefix="/m", tags=["Movies"])
 template = Jinja2Templates(directory="frontend")

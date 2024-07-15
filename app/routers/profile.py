@@ -7,7 +7,7 @@ from fastapi import Depends, APIRouter, Request,HTTPException
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from ..database.database import get_db
-from .. import models
+from ..models import models
 
 router = APIRouter(prefix="/profile", tags=["Profile"])
 

@@ -9,7 +9,7 @@ from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from scraper import scrape_news
 from app.database.database import get_db
-from app import models
+from app.models import models
 
 router = APIRouter(tags=["Home"])
 template = Jinja2Templates(directory="frontend")

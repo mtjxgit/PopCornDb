@@ -1,6 +1,12 @@
+"""
+Module containing Pydantic BaseModel classes for movie-related data schemas.
+"""
 from pydantic import BaseModel
 
 class Movie(BaseModel):
+    """
+    Represents a movie with its details.
+    """
     title : str
     rating: str
     image_url : str
@@ -14,5 +20,3 @@ class Movie(BaseModel):
     director: str
     writers:str
     stars: str
-    
-    

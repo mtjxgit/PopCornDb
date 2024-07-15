@@ -7,7 +7,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from app.database.database import get_db
-from app import models
+from app.models import models
 from app.schemas import authenticate as schemas
 
 router = APIRouter(tags=["Authentication"])
@@ -23,7 +23,7 @@ def signup_page(request: Request):
 @router.post("/auth/signup")
 def handle_signup(
     request: Request, db: Session = Depends(get_db),
-    form_data: schemas.signup = Depends(schemas.signup.as_form)
+    form_data: schemas.SignUp = Depends(schemas.SignUp.as_form)
 ):
     """
     Handles the signup form submission.
@@ -47,7 +47,7 @@ def login_page(request: Request):
 @router.post("/auth/login")
 def handle_login(
     request: Request,
-    formdata: schemas.login = Depends(schemas.login.as_login_form),
+    formdata: schemas.Login = Depends(schemas.Login.as_login_form),
     db: Session = Depends(get_db)
 ):
     """

@@ -4,7 +4,7 @@ This module defines the SQLAlchemy models for the application.
 
 from sqlalchemy import Column, Integer, Float, String, ForeignKey
 from sqlalchemy.orm import relationship
-from .database.database import Base
+from ..database.database import Base
 # pylint: disable=R0903
 class News(Base):
     """
