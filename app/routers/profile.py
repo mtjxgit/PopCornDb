@@ -1,12 +1,12 @@
 from fastapi import Depends, APIRouter,Request
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
-from Database.database import get_db
+from database.database import get_db
 from .. import  models
 
 router = APIRouter(prefix="/profile",tags=["Profile"])
 
-template = Jinja2Templates(directory="UI")
+template = Jinja2Templates(directory="frontend")
  
 
 

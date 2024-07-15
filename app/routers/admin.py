@@ -1,19 +1,12 @@
 from fastapi import Depends,Form , APIRouter
 from fastapi.templating import Jinja2Templates
-
-
 from sqlalchemy.orm import Session
-from Database.database import get_db
+from database.database import get_db
 from .. import  models
-from ..Schemas import movies as schemas
+from ..schemas import movies as schemas
 
 router = APIRouter(prefix="/admin",tags=["Admin"])
-
-template = Jinja2Templates(directory="UI")
-
-
-
-
+template = Jinja2Templates(directory="frontend")
 
 @router.patch("/{id}")
 def update_rating(id,request :float = Form( ... ),db:Session=Depends(get_db)):

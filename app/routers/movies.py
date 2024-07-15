@@ -3,11 +3,11 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from typing import Optional
 from sqlalchemy.orm import Session
-from Database.database import get_db
+from database.database import get_db
 from .. import models
 
 router = APIRouter(prefix="/m",tags=["Movies"])
-template = Jinja2Templates(directory="UI")
+template = Jinja2Templates(directory="frontend")
 
 @router.get("/{movie_id}")
 @router.get('/{movie_id}/{user_id}')

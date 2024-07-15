@@ -7,4 +7,5 @@ uvicorn
 pydantic
 selenium
 jinja2
+pylint
 

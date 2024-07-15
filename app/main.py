@@ -3,7 +3,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 
 from .routers import movies,authenticate,admin,home,profile
-from Database.database import Engine,Base
+from database.database import Engine,Base
 from typing import Optional
 
 

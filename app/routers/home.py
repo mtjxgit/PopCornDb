@@ -3,16 +3,16 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 
 from sqlalchemy.orm import Session
-from Database.database import get_db
+from database.database import get_db
 from .. import models
-from scrapper import scrape_news
+from web_scraper import scrape_news
 from typing import Optional
 
 
  
 
 router = APIRouter(tags=["Home"])
-template = Jinja2Templates(directory="UI")
+template = Jinja2Templates(directory="frontend")
 
 @router.get("/home/{user_id}")
 @router.get("/home")

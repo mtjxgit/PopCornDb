@@ -2,15 +2,15 @@ from fastapi import Depends,APIRouter,Request,HTTPException,status
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
-from Database.database import get_db
+from database.database import get_db
 from .. import models
-from ..Schemas import authenticate as schemas
+from ..schemas import authenticate as schemas
 
 
 
 router= APIRouter(tags=["Authentication"])
 
-template = Jinja2Templates(directory="UI")
+template = Jinja2Templates(directory="frontend")
 
 
 

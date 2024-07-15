@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import sqlite3
 
-from movie import scrape_from
+from web_scraper.scrape_movie import scrape_from
 
 driver = webdriver.Chrome()
 driver.get('https://www.imdb.com/chart/top/?ref_=nv_mv_250')
