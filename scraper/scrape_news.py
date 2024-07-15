@@ -16,7 +16,7 @@ def scrape():
     Scrapes news articles from Rotten Tomatoes website and stores them in a SQLite database.
     """
     chrome_options = Options()
-    # chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless")
     driver = webdriver.Chrome(options=chrome_options)
     driver.get('https://www.rottentomatoes.com')
     time.sleep(5)

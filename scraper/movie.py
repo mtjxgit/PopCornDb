@@ -4,6 +4,7 @@ This module contains the function scrape_from which scrapes movie details from a
 
 import time
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 # pylint: disable=line-too-long
 # pylint: disable=R0914
@@ -19,7 +20,9 @@ def scrape_from(url):
         list: A list containing movie details such as title, image URL, rating, genre, description, 
               year, certificate, runtime, OTT platform, OTT image, directors, writers, and stars.
     """
-    driver = webdriver.Chrome()
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    driver = webdriver.Chrome(options=chrome_options)
     driver.get(url)
 
     time.sleep(2)

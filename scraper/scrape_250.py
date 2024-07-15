@@ -6,12 +6,15 @@ into a CSV file and a SQLite database.
 import sqlite3
 import time
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import pandas as pd
 import movie
 
 # Initialize the Chrome driver
-driver = webdriver.Chrome()
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+driver = webdriver.Chrome(options=chrome_options)
 driver.get('https://www.imdb.com/chart/top/?ref_=nv_mv_250')
 
 # Scroll to the bottom of the page to load all content
