@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet">
+   
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+ 
+    
+  
+
+    <title>🍿 PopDb</title>
+    <style>
+      .navbar.blur {
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(40px);
+      background-color: rgba(0, 0, 0, 0.15);
+    }
+
+
+    .form-control {
+          backdrop-filter: blur(30px);
+          background: transparent;
+          border-radius: 20px;
+          border:#b5b5b5 1px solid;
+          padding: 3px 30px;
+      }
+
+      .form-control::placeholder {
+          color: #b5b5b5;
+      }
+
+      .form-control:focus {
+          background-color: rgba(255, 255, 255, 0.052);
+          border: none;
+          color: #fefefe;
+      
+      }
+
+      .black{
+          background-color: black;
+      }
+
+      .ott-btn{
+        width: 120px;
+        height: 70px;
+        padding: 15px;
+        background-color: rgb(228, 228, 228);
+        border-radius: 20px;
+        margin-right: 10px;
+        font-size:xx-large;
+        font-weight: bolder;
+        color: black;
+      }
+
+      .ott-btn:hover{
+        background-color: white;
+        scale: 1.03;
+      }
+
+      .carousel-inner .carousel-item {
+        transition: transform 0.2s ease-in-out;
+        }
+
+        .hero-wrapper {
+            position: relative; 
+            background-color: rgba(0, 0, 0, 0.809);
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-size: cover;
+            background-position: center;
+            filter: blur(60px);
+            -webkit-filter: blur(60px);
+            
+        }
+
+        .hero {
+            position: relative; /* Ensure content is positioned correctly */
+            z-index: 1; /* Place content above blurred background */
+            padding: 60px;
+        }
+
+        .news-overlay{
+          border-radius: 10px;
+          padding: 15px;
+          background-color: rgba(32, 32, 36, 0.819);
+        }
+
+  </style>
+</head>
+<body class="text-light" >
+
+  <nav class="navbar blur fixed-top navbar-expand-lg navbar-dark text-light">
+      <div class="container">
+          <div class="row">
+              <div class="col">
+                  <a class="navbar-brand" href="/home/{{user.user_id}}">
+                      🍿 <b>PopCorn</b> <span class="rounded p-1 text-dark" style="background-color: rgb(227, 101, 101);" ><b>Reviews</b></span>
+                  </a>
+              </div>
+          </div>
+        <div class="d-flex justify-content-end">
+          <form class="d-flex ms-auto" action="/search" method="get">
+            <input class="form-control me-2 search" type="search" placeholder="search" aria-label="Search" name="movie_id">
+            <input type="hidden" name="user_id" value="{{ user.user_id }}">
+            
+        </form>
+        
+        <ul class="navbar-nav ms-3">
+          
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class='bx bxs-bookmark'></i> Watchlist
+            </a>
+          </li>
+          <li class="nav-item">
+            {% if user %}
+              <a class="nav-link" href="/profile/u/{{user.user_id}}">
+                <i class='bx bxs-user'></i> {{user.username}}
+              </a>
+            {%else%}
+
+              
+              <a class="nav-link" href="/auth/login">
+                <i class='bx bxs-user'></i> Login
+              </a>
+
+            {% endif %}
+          </li>
+          <li class="nav-item">
+              <a href="/auth/logout" class="nav-link">
+                <i class="bx bx-power-off"></i>
+              </a>
+          </li>
+        </ul> 
+        </div>
+      </div>
+    </nav>
+
+    <div class="hero-wrapper pt-5">
+      <div class="hero-bg" style="background-image: url('{{news[7].image_url}}');"></div>
+        <div class="container hero">
+          <section class="container-fluid">
+            <div class="row">
+              <div class="col-6">
+                <div id="carouselExampleControls" class="carousel slide carousel-fade" data-ride="carousel">
+          
+                  <div class="carousel-inner">
+
+                    <div class="carousel-item active">
+                      <img class="d-block rounded" src="{{news[4].image_url}}" alt="First slide" style="width: 710px; height: 400px;">
+                      <div class="carousel-caption d-none d-md-block news-overlay text-bg-dark">
+                        <h5 class="text-truncate">{{news[4].title}}</h5>
+                        <p class="text-truncate" style="color: #b5b5b5;"><small>{{news[4].desc}}</small></p>
+                      </div>
+                    </div>
+
+                        {% for item in news[:6] %}
+                        
+                    <div class="carousel-item">
+                      <a href="{{item.href}}">
+                        <img class="d-block rounded" src="{{item.image_url}}" alt="First slide" style="width: 709px; height: 400px;">
+                        <div class="carousel-caption d-none d-md-block news-overlay text-bg-dark">
+                          <h5 class="text-truncate">{{item.title}}</h5>
+                          <p class="text-truncate" style="color: #b5b5b5;"><small> {{item.desc}} </small></p>
+                        </div>
+                      </a>
+                    </div>
+                          
+                        {% endfor %}
+                  </div>
+                  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  </a>
+                  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  </a>
+                </div>
+  
+              </div>
+              <div class="col-3">
+                <a href="{{news[7].href}}" style="text-decoration: None;">
+                  <div class="card text-bg-dark" >
+                    <img class=" card-img-top" src="{{news[7].image_url}}" alt="First slide" >
+                  <div class="card-body">
+                    <h5 class="card-title">{{news[7].title}}</h5>
+                    <p class="card-text" style="color: #b5b5b5;"> <small>{{news[7].desc}} </small>  </p>
+                  </div>
+                  </div>
+                </a>     
+              </div>
+
+              <div class="col-3">
+                <a href="{{news[8].href}}" style="text-decoration: None;">
+                  <div class="card text-bg-dark">
+                  <img class=" card-img" src="{{news[8].image_url}}" alt="First slide">
+                  <div class="card-body">
+                    <h5 class="card-title">{{news[8].title}}</h5>
+                    <p class="card-text" style="color: #b5b5b5;"><small>{{news[8].desc}}</small> </p>
+                  </div>
+                  </div>
+                </a>            
+            </div>
+  
+            </div>
+          </section>  
+          
+        </div>
+    </div>
+
+      <section class="container-fluid black ">
+            <div class="container p-5 ">
+              <div class="container pt-5">
+                <span style="white-space: pre;" class="text-warning">W H A T    T O    W A T C H</span>
+              </div>
+
+              {% if user %}
+                <section class="container-fluid black text-light ">
+                  <div class="container mt-5">
+                      <h4 class="text mb-4">
+                          From Your Watchlist
+                          <a href="#imdb-top-10" class="text-light">
+                              <i class='bx bx-right-arrow-alt'></i>
+                          </a>
+                      </h4>
+                
+                    <!-- Horizontal scroll container -->
+                    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-4 overflow-auto flex-nowrap" id="movies-container">
+                          {% for item in watchlist %}
+                        <div class="col">
+                            <a href="/m/{{ item.index }}/{{ user.user_id }}" class="text-decoration-none">
+                            <div class="card bg-dark text-light h-100">
+                              <img src="{{item.image_url}}" class="card-img-top" alt="Movie 1">
+                              <div class="card-body">
+                                <p class="card-text text-truncate" style="max-width: 100%;">{{ item.title }}</p>
+                                <p class="card-text small">🍿 {{item.rating}}</p>
+                              </div>
+                            </div>
+                          </a>
+                        </div>
+                          {% endfor %}
+                      </div>
+                  </div>
+                </section>
+              {% endif %}
+            
+              <section class="container-fluid black text-light ">
+                <div class="container mt-5">
+                  <h4 class="text mb-4">Top 10 on IMDb this week</h2>
+                  
+                  <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-4 overflow-auto flex-nowrap">
+                    {% for item in topten %}
+                    <div class="col">
+                      <a href="/m/{{ item.index }}/{{ user.user_id }}" class="text-decoration-none">
+                      <div class="card bg-dark text-light h-100">
+                        <img src="{{item.image_url}}" class="card-img-top" >
+                      </a>
+                      <div class="card-body">
+                          <p class="card-text text-truncate" style="max-width: 100%;">{{ item.title }}</p>
+                          <p class="card-text small">🍿 {{ item.rating }}</p>
+                      </div>
+                      </div>
+                    
+                    </div>
+                    {% endfor %}
+                  </div>
+            </div>
+      </section>
+            </div>
+            
+      
+            
+          
+            <div class="container">
+              <h1 style="color:#f5c518;" class="text">Explore what's streaming</h1>
+            </div>
+    
+
+    
+            
+            <div class="container mt-4">
+              <div class="container my-4">
+                <ul class="nav nav-tabs" id="ottTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="true">All</button>
+                    </li>
+                    {% for ott in unique_ott_list %}
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="{{ ott }}-tab" data-bs-toggle="tab" data-bs-target="#{{ ott }}" type="button" role="tab" aria-controls="{{ ott }}" aria-selected="false">{{ ott }}</button>
+                    </li>
+                    {% endfor %}
+                </ul>
+            
+                <!-- Tab panes -->
+                <div class="tab-content" id="ottTabsContent">
+                    <!-- All Tab -->
+                    <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+                        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-4 mt-2" id="movies-container">
+                            {% for item in all[12:32] %}
+                            <div class="col">
+                                <a href="/m/{{ item.index }}/{{ user.user_id }}" class="text-decoration-none">
+                                    <div class="card bg-dark text-light h-100">
+                                        <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.title }}">
+                                        <div class="card-body">
+                                            <p class="card-text text-truncate" style="max-width: 100%;">{{ item.title }}</p>
+                                            <p class="card-text small">🍿 {{ item.rating }}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+            
+                    <!-- OTT-specific Tabs -->
+                    {% for ott in unique_ott_list %}
+                    <div class="tab-pane fade" id="{{ ott }}" role="tabpanel" aria-labelledby="{{ ott }}-tab">
+                        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-4 mt-2" id="movies-container-{{ ott }}">
+                            {% for item in all %}
+                            {% if item.ott == ott %}
+                            <div class="col">
+                                <a href="/m/{{ item.index }}/{{ user.user_id }}" class="text-decoration-none">
+                                    <div class="card bg-dark text-light h-100">
+                                        <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.title }}">
+                                        <div class="card-body">
+                                            <p class="card-text text-truncate" style="max-width: 100%;">{{ item.title }}</p>
+                                            <p class="card-text small">🍿 {{ item.rating }}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            </div>
+         
+    </section>  
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

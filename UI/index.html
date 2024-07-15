@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>🍿 PopcornDB</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+      .navbar.blur {
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(40px);
+      background-color: rgba(0, 0, 0, 0.15);
+    }
+
+
+    .form-control {
+          backdrop-filter: blur(30px);
+          background: transparent;
+          border-radius: 20px;
+          border:#b5b5b5 1px solid;
+          padding: 3px 30px;
+      }
+
+      .form-control::placeholder {
+          color: #b5b5b5;
+      }
+
+      .form-control:focus {
+          background-color: rgba(255, 255, 255, 0.052);
+          border: none;
+          color: #fefefe;
+      
+      }
+
+      .black{
+          background-color: black;
+      }
+
+      .ott-btn{
+        width: 120px;
+        height: 70px;
+        padding: 15px;
+        background-color: rgb(228, 228, 228);
+        border-radius: 20px;
+        margin-right: 10px;
+        font-size:xx-large;
+        font-weight: bolder;
+        color: black;
+      }
+
+      .ott-btn:hover{
+        background-color: white;
+        scale: 1.03;
+      }
+
+      .carousel-inner .carousel-item {
+        transition: transform 0.2s ease-in-out;
+        }
+
+        .hero-wrapper {
+            position: relative; 
+            background-color: rgba(0, 0, 0, 0.809);
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-size: cover;
+            background-position: center;
+            filter: blur(60px);
+            -webkit-filter: blur(60px);
+            
+        }
+
+        .hero {
+            position: relative; /* Ensure content is positioned correctly */
+            z-index: 1; /* Place content above blurred background */
+            padding: 60px;
+        }
+
+        .news-overlay{
+          border-radius: 10px;
+          padding: 15px;
+          background-color: rgba(0, 0, 0, 0.819);
+        }
+
+        .spotlight{
+          padding: 25px;
+          width:240px;
+          height: 102px;
+          margin-bottom: 10px;
+        }
+
+    </style>
+
+  </head>
+  <body class="text-bg-dark">
+    <nav class="navbar navbar-dark navbar-expand-lg  fixed-top blur">
+      <div class="container">
+        <a class="navbar-brand" href="/home/{{user.user_id}}">
+          🍿 <b>PopCorn</b> <span class="rounded p-1 text-dark" style="background-color: rgb(227, 101, 101);" ><b>Reviews</b></span>
+        </a>
+        
+        
+        <div class="d-flex justify-content-end">
+          <form action="/search" method="get">
+            <input type="search" placeholder="search" class="form-control me-2 search" name="movie_id">
+            <input type="hidden" value="{{user.user_id}}">
+          </form>
+          <ul class="navbar-nav ms-3">
+            {% if user %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{user.username}}
+              </a>
+              <ul class="dropdown-menu">
+                <li >
+                  <a class="dropdown-item" href="/profile/u/{{user.user_id}}">
+                    <i class='bx bx-food-tag'></i>
+                    Profile
+                  </a>
+                </li>
+                <li >
+                  <a class="dropdown-item" href="/auth/logout">
+                    <i class="bx bx-power-off"></i>
+                    logout
+                  </a>
+                </li>
+              </ul>
+            </li>
+            {%else%}
+                <a class="nav-link" href="/auth/login">
+                  <i class='bx bxs-user'></i> Sign in
+                </a>
+            {%endif%}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="hero-wrapper pt-5">
+      <div class="hero-bg" style="background-image: url('{{news[8].image_url}}');"></div>
+      <div class="container hero">
+        <div class="row">
+              <div class="col-6">
+                <div id="carouselExampleCaptions" class="carousel slide">
+                
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                          <img class="d-block rounded" src="{{news[4].image_url}}" alt="First slide">
+                          <div class="carousel-caption d-none d-md-block news-overlay">
+                            <h5 class="text-truncate">{{news[4].title}}</h5>
+                            <p class="text-truncate" style="color: #b5b5b5;"><small>{{news[4].desc}}</small></p>
+                          </div>
+                        </div>
+
+                    {% for item in news[:6] %}
+                          <div class="carousel-item">
+                            <img src="{{item.image_url}}" class="d-block rounded" alt="...">
+                            <div class="carousel-caption d-none d-md-block news-overlay">
+                              <h5 class="text-truncate">{{item.title}}</h5>
+                              <p class="text-truncate" style="color: #b5b5b5;"><small> {{item.desc}} </small></p>
+                            </div>
+                          </div>
+                    {% endfor %}
+                    
+                  </div>
+
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+
+                </div>
+              </div>
+              <div class="col-3">
+                <a href="{{news[7].href}}" style="text-decoration: None;">
+                  <div class="card text-bg-dark">
+                    <img class="card-img-top" src="{{ news[7].image_url }}" alt="Card image">
+                    <div class="card-img-overlay d-flex flex-column justify-content-end align-items-center">
+                      <div class="news-overlay spotlight">
+                        <h5 class="card-title text-truncate">{{ news[7].title }}</h5>
+                        <p class="card-text text-truncate"><small>{{ news[7].desc }}</small></p>
+                      </div>
+                    </div>
+                  </div>
+                </a>     
+              </div>
+
+              <div class="col-3">
+                <a href="{{news[8].href}}" style="text-decoration: None;">
+                  <div class="card text-bg-dark">
+                    <img class="card-img-top" src="{{ news[8].image_url }}" alt="Card image">
+                    <div class="card-img-overlay d-flex flex-column justify-content-end align-items-center">
+                      <div class="news-overlay spotlight">
+                        <h5 class="card-title text-truncate">{{ news[8].title }}</h5>
+                        <p class="card-text text-truncate"><small>{{ news[8].desc }}</small></p>
+                      </div>
+                    </div>
+                  </div>
+                </a>     
+              </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid ps-5 pb-5 black">
+      <div class="container pt-5">
+        <span style="white-space: pre;" class="text-warning">W H A T    T O    W A T C H</span>
+      </div>
+
+      {% if user %}
+      <section class="text-light">
+        <div class="container mt-3">
+            <h4 class="text mb-4">
+                From Your Watchlist
+                <a href="#imdb-top-10" class="text-light">
+                    <i class='bx bx-right-arrow-alt'></i>
+                </a>
+            </h4>
+      
+          <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-4 overflow-auto flex-nowrap" id="movies-container">
+                {% for item in watchlist %}
+              <div class="col">
+                  <a href="/m/{{ item.index }}/{{ user.user_id }}" class="text-decoration-none">
+                  <div class="card  text-bg-dark h-100">
+                    <img src="{{item.image_url}}" class="card-img-top" alt="Movie 1">
+                    <div class="card-body">
+                      <p class="card-text text-truncate" style="max-width: 100%;">{{ item.title }}</p>
+                      <p class="card-text small">🍿 {{item.rating}}</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+                {% endfor %}
+            </div>
+        </div>
+      </section>
+      {% endif %}
+
+      <section class="text-light">
+        <div class="container mt-5">
+            <h4 class="text mb-4">
+                Top 10 on IMDb this week
+                <a href="#imdb-top-10" class="text-light">
+                    <i class='bx bx-right-arrow-alt'></i>
+                </a>
+            </h4>
+      
+          <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-4 overflow-auto flex-nowrap" id="movies-container">
+                {% for item in topten %}
+              <div class="col">
+                  <a href="/m/{{ item.index }}/{{ user.user_id }}" class="text-decoration-none">
+                  <div class="card  text-bg-dark h-100">
+                    <img src="{{item.image_url}}" class="card-img-top" alt="Movie 1">
+                    <div class="card-body ">
+                      <p class="card-text text-truncate" style="max-width: 100%;">{{ item.title }}</p>
+                      <p class="card-text small">🍿 {{item.rating}}</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+                {% endfor %}
+            </div>
+        </div>
+      </section>
+
+
+      <div class="container mt-5 pt-5">
+        <span style="white-space: pre;" class="text-warning">E X P L O R E   W H A T' S   S T R E A M I N G</span>
+      </div>
+      <div class="container mt-4">
+        <div class="container my-4 ">
+          <ul class="nav nav-tabs" id="ottTabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                  <button class="nav-link active text-primary" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="true">All</button>
+              </li>
+              {% for ott in unique_ott_list %}
+              <li class="nav-item" role="presentation">
+                  <button class="nav-link text-primary" id="{{ ott }}-tab" data-bs-toggle="tab" data-bs-target="#{{ ott }}" type="button" role="tab" aria-controls="{{ ott }}" aria-selected="false">{{ ott }}</button>
+              </li>
+              {% endfor %}
+          </ul>
+      
+          <!-- Tab panes -->
+          <div class="tab-content" id="ottTabsContent">
+              <!-- All Tab -->
+              <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+                  <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-4 mt-2" id="movies-container">
+                      {% for item in all[12:30] %}
+                      <div class="col">
+                          <a href="/m/{{ item.index }}/{{ user.user_id }}" class="text-decoration-none">
+                              <div class="card bg-dark text-light h-100">
+                                  <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.title }}">
+                                  <div class="card-body">
+                                      <p class="card-text text-truncate" style="max-width: 100%;">{{ item.title }}</p>
+                                      <p class="card-text small">🍿 {{ item.rating }}</p>
+                                  </div>
+                              </div>
+                          </a>
+                      </div>
+                      {% endfor %}
+                  </div>
+              </div>
+      
+              <!-- OTT-specific Tabs -->
+              {% for ott in unique_ott_list %}
+              <div class="tab-pane fade" id="{{ ott }}" role="tabpanel" aria-labelledby="{{ ott }}-tab">
+                  <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-4 mt-2" id="movies-container-{{ ott }}">
+                      {% for item in all %}
+                      {% if item.ott == ott %}
+                      <div class="col">
+                          <a href="/m/{{ item.index }}/{{ user.user_id }}" class="text-decoration-none">
+                              <div class="card bg-dark text-light h-100">
+                                  <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.title }}">
+                                  <div class="card-body">
+                                      <p class="card-text text-truncate" style="max-width: 100%;">{{ item.title }}</p>
+                                      <p class="card-text small">🍿 {{ item.rating }}</p>
+                                  </div>
+                              </div>
+                          </a>
+                      </div>
+                      {% endif %}
+                      {% endfor %}
+                  </div>
+              </div>
+              {% endfor %}
+          </div>
+      </div>
+
+      </div>
+
+    </div>
+    <footer class="p-5">
+        <span><small>© mtj</small></span>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+fastapi
+sqlalchemy
+pandas
+bs4
+requests
+uvicorn
+pydantic
+selenium
+jinja2
+

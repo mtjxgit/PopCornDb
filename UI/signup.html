@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Signup</title>
+
+    
+    
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: auto;
+            background-color: black;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+        }
+        .container {
+            background-color: #161616;
+            border-radius: 30px;
+            box-shadow: 0 0 10px rgba(42, 42, 42, 0.5);
+            width: 1000px;
+            padding: 30px;
+        }
+        .form-control
+         {
+            background-color: transparent;
+            border: gray 1px solid;
+            padding: 30px 20px;
+            border-radius: 20px;
+            height: 20px;
+        }
+        .form-control:focus {
+            background-color: #1d1d1d;
+            color: #ffffff;
+            border-color: #ffffff;
+            box-shadow: none;
+        }
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .btn{
+            font-weight: bolder;
+            border-radius: 16px;
+            width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+    
+
+        <div class="row">
+            <div class="col">
+                <h1>🍿</h1>
+                <h1>Create an account</h1>
+                <h6>Enter your details</h6>
+            </div>
+            <div class="col d-flex flex-column justify-content-center">
+                <form action="/auth/signup" method="post" class="needs-validation" novalidate>
+                    <div class="form-group">
+                        
+                        <input type="text" class="form-control text-light" id="name" name="name" placeholder="name" required>
+                        <div class="invalid-feedback">
+                            Please provide your full name.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="username" required>
+                        <div class="invalid-feedback">
+                            Please provide a username.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        
+                        <input type="password" class="form-control" id="password" name="password" placeholder="password" required>
+                        <div class="invalid-feedback">
+                            Please provide a password.
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <a href="/auth/login" class="text-primary">already have an account?</a>
+                            </div>
+                            <div class="col d-flex justify-content-end">
+                                <button type="submit" class="btn btn-outline-warning">Sign Up</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        
+
+
+            
+        
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Form validation script -->
+    <script>
+        // Bootstrap form validation
+        (function () {
+            'use strict'
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+</body>
+</html>
