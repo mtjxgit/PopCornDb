@@ -2,66 +2,88 @@
 This module handles the authentication routes for the FastAPI application.
 """
 
-from fastapi import Depends, APIRouter, Request
+from fastapi import Depends, APIRouter, Request,HTTPException,status
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse,HTMLResponse
+from datetime import datetime, timedelta, timezone
 from sqlalchemy.orm import Session
 from app.database.database import get_db
 from app.models import models
 from app.schemas import authenticate as schemas
+from app.security import create_access_token,get_password_hash,verify_password,authenticate_user
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from typing import Annotated
+from app.security import ACCESS_TOKEN_EXPIRE_MINUTES
+
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 router = APIRouter(tags=["Authentication"])
 template = Jinja2Templates(directory="frontend")
 
-@router.get("/auth/signup")
-def signup_page(request: Request):
-    """
-    Renders the signup page.
-    """
-    return template.TemplateResponse("signup.html", {"request": request})
 
-@router.post("/auth/signup")
+@router.post("/token")
+async def login_for_access_token(
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    db:Session=Depends(get_db)
+) -> schemas.Token:
+    user = authenticate_user(form_data.username, form_data.password,db)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.username}, expires_delta=access_token_expires
+    )
+    return schemas.Token(access_token=access_token, token_type="bearer")
+
+templates = Jinja2Templates(directory="frontend")
+
+@router.get("/login", response_class=HTMLResponse)
+async def login_page(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+
+@router.post("/login")
+async def login(request: Request, form_data: Annotated[OAuth2PasswordRequestForm, Depends()],db:Session=Depends(get_db)):
+    user = authenticate_user(form_data.username, form_data.password,db)
+    if not user:
+        return templates.TemplateResponse("login.html", {"request": request, "error": "Incorrect username or password"})
+    
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.username}, expires_delta=access_token_expires
+    )
+
+    response = RedirectResponse(url="/home", status_code=status.HTTP_303_SEE_OTHER)
+    response.set_cookie(key="access_token", value=access_token, httponly=True)
+    return response
+
+@router.get("/signup")
+def create_user(request:Request):
+    return templates.TemplateResponse("signup.html",{"request":request})
+
+
+@router.post("/signup")
 def handle_signup(
-    request: Request, db: Session = Depends(get_db),
-    form_data: schemas.SignUp = Depends(schemas.SignUp.as_form)
+request: Request, db: Session = Depends(get_db),
+form_data: schemas.SignUp = Depends(schemas.SignUp.as_form)
 ):
     """
     Handles the signup form submission.
     """
-    new_user = models.Users(
-        name=form_data.name, username=form_data.username, password=form_data.password
+    check = db.query(models.Users).filter(models.Users.username == form_data.username).first()
+    if check:
+        return templates.TemplateResponse("login.html", {"request": request,"error":"user already registered"})
+
+    hashed_password = get_password_hash(form_data.password)
+    new_user = models.Users(hashed_password=hashed_password,
+        name=form_data.name, username=form_data.username, 
     )
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
     print(new_user)
-    return template.TemplateResponse("login.html", {"request": request})
-
-@router.get("/auth/login")
-def login_page(request: Request):
-    """
-    Renders the login page.
-    """
-    return template.TemplateResponse("login.html", {"request": request})
-
-@router.post("/auth/login")
-def handle_login(
-    request: Request,
-    formdata: schemas.Login = Depends(schemas.Login.as_login_form),
-    db: Session = Depends(get_db)
-):
-    """
-    Handles the login form submission.
-    """
-    user = db.query(models.Users).filter(models.Users.username == formdata.username).first()
-    if user and formdata.password == user.password:
-        return RedirectResponse(url=f"/home/{user.user_id}", status_code=303)
-    return template.TemplateResponse("login.html",
-                                 {"request": request, "error": "Invalid username or password"})
-
-@router.get("/auth/logout")
-def logout(request: Request):
-    """
-    Logs the user out and renders the login page.
-    """
-    return template.TemplateResponse("login.html", {"request": request})
+    return templates.TemplateResponse("login.html", {"request": request})
