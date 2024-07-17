@@ -4,7 +4,7 @@ This module contains the routes for the home page and search functionality.
 
 from typing import Optional,Annotated
 from fastapi import APIRouter, Depends, Request, BackgroundTasks,HTTPException
-from fastapi.templating import Jinja2Templates
+
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from scraper import scrape_news
@@ -13,11 +13,11 @@ from app.models.models import Movies,Watchlist,News,Users
 from app.schemas.user import User
 from app.security.security import get_current_active_user
 from scraper import scrape_news
-from fastapi.templating import Jinja2Templates
+
 from fuzzywuzzy import process
+from app.template_config import templates
 
 router = APIRouter(tags=["Home"])
-templates = Jinja2Templates(directory="frontend")
 
 
 @router.get("/home")

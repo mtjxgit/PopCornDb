@@ -4,15 +4,12 @@ deleting users, and getting recommendations.
 """
 
 from fastapi import Depends, APIRouter, Request,HTTPException
-from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from ..database.database import get_db
 from ..models import models
+from app.template_config import templates
 
 router = APIRouter(prefix="/profile", tags=["Profile"])
-
-template = Jinja2Templates(directory="frontend")
-
 
 @router.get("/u/{uid}")
 def profile(uid: int, request: Request, db: Session = Depends(get_db)):
@@ -43,7 +40,7 @@ def profile(uid: int, request: Request, db: Session = Depends(get_db)):
         movie = db.query(models.Movies).filter(models.Movies.index == item.movie_id).first()
         watchlist.append(movie)
 
-    return template.TemplateResponse(
+    return templates.TemplateResponse(
         "profile.html",
         {
             "request": request,
@@ -89,7 +86,7 @@ def recommendations(uid: int, db: Session = Depends(get_db)):
         list: List of recommended movie titles.
     """
     movie_ids = db.query(models.Ratings).filter(
-        models.Ratings.user_id == uid, models.Ratings.rating > 9).all()
+        models.Ratings.user_id == uid, models.Ratings.rating > 1).all()
 
     fav_genres = []
     for item in movie_ids:

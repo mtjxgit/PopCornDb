@@ -6,14 +6,13 @@ viewing ratings, and managing users.
 """
 
 from fastapi import Depends, Form, APIRouter
-from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from app.database.database import get_db
 from app.models import models
 from app.schemas import movies as schemas
+from app.template_config import templates
 
 router = APIRouter(prefix="/admin", tags=["Admin"])
-template = Jinja2Templates(directory="frontend")
 
 @router.patch("/{movie_id}")
 def update_rating(movie_id: int, rating: float = Form(...), db: Session = Depends(get_db)):

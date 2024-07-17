@@ -4,14 +4,13 @@ This module contains the routes for movie details, adding to watchlist, and rati
 
 from typing import Optional
 from fastapi import Depends, Request, HTTPException, Form, APIRouter
-from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from ..database.database import get_db
 from ..models import models
+from app.template_config import templates
 
 router = APIRouter(prefix="/m", tags=["Movies"])
-template = Jinja2Templates(directory="frontend")
 
 @router.get("/{movie_id}")
 @router.get("/{movie_id}/{user_id}")
@@ -60,7 +59,7 @@ def get_movie_details(
 
     rating = rating_record.rating if rating_record else 0
 
-    return template.TemplateResponse(
+    return templates.TemplateResponse(
         "movie.html",
         {
             "request": request,

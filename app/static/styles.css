@@ -1,0 +1,133 @@
+      .navbar.blur {
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(40px);
+      background-color: rgba(0, 0, 0, 0.15);
+    }
+
+    .form-control {
+          background: transparent;
+          border-radius: 20px;
+          border:#b5b5b5 1px solid;
+          padding: 3px 30px;
+      }
+
+      .form-control::placeholder {
+          color: #b5b5b5;
+      }
+
+      .form-control:focus {
+          background-color: rgba(255, 255, 255, 0.052);
+          border: none;
+          color: #fefefe;
+      
+      }
+
+      .black{
+          background-color: black;
+      }
+      
+      .black-lite{
+        background-color: rgb(17, 17, 17);
+      }
+
+      .muted{
+        color: #b5b5b5;
+      }
+
+      .ott-btn{
+        width: 120px;
+        height: 70px;
+        padding: 15px;
+        background-color: rgb(228, 228, 228);
+        border-radius: 20px;
+        margin-right: 10px;
+        font-size:xx-large;
+        font-weight: bolder;
+        color: black;
+      }
+
+      .ott-btn:hover{
+        background-color: white;
+        scale: 1.03;
+      }
+
+  
+        .hero-wrapper {
+            position: relative; 
+            background-color: rgba(0, 0, 0, 0.809);
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-size: cover;
+            background-position: center;
+            filter: blur(60px);
+            -webkit-filter: blur(60px);
+            
+        }
+
+        .hero {
+            position: relative; /* Ensure content is positioned correctly */
+            z-index: 1; /* Place content above blurred background */
+            padding: 60px;
+        }
+
+        .news-overlay{
+          padding: 15px;
+          background-color: black;
+          border-left: 2px red solid ;
+
+        }
+
+        .spotlight{
+          padding: 25px;
+          width:240px;
+          height: 102px;
+          margin-bottom: 10px;
+        }
+
+        .carousel-caption{
+          text-align: left;
+          position: relative;
+          right: 0%;
+          left: 0%;
+          bottom: 0%;
+          height: 88px;
+          border-bottom-left-radius: 20px;
+        }
+
+        .left-rounded {
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+            
+        }
+
+        .middle-square {
+            border-radius: 0px;
+            
+        }
+
+        .right-rounded {
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+            
+        }
+
+        a{
+          text-decoration: none;
+        }
+
+        .news{
+          height: 337px;
+        }
+
+

@@ -23,7 +23,6 @@
       }
 
       .form-control {
-        backdrop-filter: blur(30px);
         background: transparent;
         border-radius: 20px;
         border: #b5b5b5 1px solid;
@@ -66,8 +65,8 @@
         z-index: -1;
         background-size: cover;
         background-position: center;
-        filter: blur(60px);
-        -webkit-filter: blur(60px);
+        filter: blur(80px);
+        -webkit-filter: blur(120px);
       }
 
       .hero {
@@ -120,6 +119,27 @@
         padding: 5px;
         margin-right: 5px;
       }
+
+      .glass{
+        background: transparent;
+      }
+
+      .crew{
+        margin-top: 20px;
+        background-color: transparent;
+        color: white;
+      }
+
+      tr{
+        border-bottom: 1px #b5b5b5 solid;
+      }
+      td,th{
+        padding:10px ;
+      }
+      td{
+        color: #b5b5b5;
+      }
+
     </style>
   </head>
   <body class="text-light black-lite">
@@ -170,7 +190,7 @@
       </div>
     </nav>
 
-    <div class="hero-wrapper shadow" style="height: 100vh;">
+    <div class="hero-wrapper shadow" >
       <div
         class="hero-bg"
         style="background-image: url('{{ movie_details.image_url }}');"
@@ -207,14 +227,26 @@
               <div class="mt-5 p-0">
                 <span class="shadow">{{movie_details.desc}}</span>
               </div>
+
+              <table class="crew">
+                <tbody>
+                  <tr>
+                    <th scope="row">Directors</th>
+                    <td>{{ movie_details.directors }}</td>
+                    
+                  </tr>
+                  <tr>
+                    <th scope="row">Writers</th>
+                    <td>{{ movie_details.writers }}</td>
+                  </tr>
+                  <tr style="border-bottom: 0px;"">
+                    <th scope="row">Stars</th>
+                    <td>{{ movie_details.stars }}</td>
+                  </tr>
+                </tbody>
+              </table>
       
-              <hr class="m-1 mt-5" />
-              <span class="small"><b>Director</b> {{ movie_details.directors }}</span>
-              <hr class="m-1" />
-              <span class="small"><b>Writer</b> {{ movie_details.writers }}</span>
-              <hr class="m-1" />
-              <span class="small"><b>Stars</b> {{ movie_details.stars }}</span>
-              <hr class="m-1" />
+              
       
               <div class="mt-5">
                 {% if is_in_watchlist %}

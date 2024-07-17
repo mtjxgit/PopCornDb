@@ -3,7 +3,6 @@ This module handles the authentication routes for the FastAPI application.
 """
 
 from fastapi import Depends, APIRouter, Request,HTTPException,status
-from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse,HTMLResponse
 from datetime import timedelta
 from sqlalchemy.orm import Session
@@ -15,12 +14,11 @@ from app.security.hashing import get_password_hash
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from typing import Annotated
 from app.security.security import ACCESS_TOKEN_EXPIRE_MINUTES
-
+from app.template_config import templates
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 router = APIRouter(tags=["Authentication"])
-template = Jinja2Templates(directory="frontend")
 
 
 @router.post("/token")
@@ -41,7 +39,6 @@ async def login_for_access_token(
     )
     return schemas.Token(access_token=access_token, token_type="bearer")
 
-templates = Jinja2Templates(directory="frontend")
 
 @router.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request):
