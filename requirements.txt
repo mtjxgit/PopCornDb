@@ -10,4 +10,4 @@ jinja2
 pylint
 pyjwt
 passlib[bcrypt]
-
+fuzzywuzzy
