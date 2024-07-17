@@ -8,4 +8,6 @@ pydantic
 selenium
 jinja2
 pylint
+pyjwt
+passlib[bcrypt]
 

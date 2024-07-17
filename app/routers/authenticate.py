@@ -5,15 +5,16 @@ This module handles the authentication routes for the FastAPI application.
 from fastapi import Depends, APIRouter, Request,HTTPException,status
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse,HTMLResponse
-from datetime import datetime, timedelta, timezone
+from datetime import timedelta
 from sqlalchemy.orm import Session
 from app.database.database import get_db
 from app.models import models
 from app.schemas import authenticate as schemas
-from app.security import create_access_token,get_password_hash,verify_password,authenticate_user
+from app.security.security import create_access_token,authenticate_user
+from app.security.hashing import get_password_hash
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from typing import Annotated
-from app.security import ACCESS_TOKEN_EXPIRE_MINUTES
+from app.security.security import ACCESS_TOKEN_EXPIRE_MINUTES
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")

@@ -3,17 +3,18 @@ This module contains the routes for the home page and search functionality.
 """
 
 from typing import Optional,Annotated
-from fastapi import APIRouter, Depends, Request, BackgroundTasks
+from fastapi import APIRouter, Depends, Request, BackgroundTasks,HTTPException
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from scraper import scrape_news
 from app.database.database import get_db
-from app.models.models import Movies,Watchlist,News,Ratings,Users
+from app.models.models import Movies,Watchlist,News,Users
 from app.schemas.user import User
-from app.security import get_current_active_user
+from app.security.security import get_current_active_user
 from scraper import scrape_news
 from fastapi.templating import Jinja2Templates
+from fuzzywuzzy import process
 
 router = APIRouter(tags=["Home"])
 templates = Jinja2Templates(directory="frontend")
@@ -41,14 +42,17 @@ async def protected_home(request: Request,background_task:BackgroundTasks,curren
     background_task.add_task(scrape_news.scrape)
     news = db.query(News).all()
 
-    user = db.query(Users).filter(Users.username == current_user.username).first()
-    watchlist_items = db.query(Watchlist).filter(Watchlist.user_id == user.user_id).all()
+    user = None
+    watchlist = None
+    if current_user:
+        user = db.query(Users).filter(Users.username == current_user.username).first()
+        watchlist_items = db.query(Watchlist).filter(Watchlist.user_id == user.user_id).all()
 
-    watchlist = []
-    for item in watchlist_items:
-        movie = db.query(Movies).filter(Movies.index == item.movie_id).first()
-        watchlist.append(movie)
-
+        watchlist = []
+        for item in watchlist_items:
+            movie = db.query(Movies).filter(Movies.index == item.movie_id).first()
+            watchlist.append(movie)
+    
     top_ten_movies = db.query(Movies).limit(10).all()
     topten = []
     for item in top_ten_movies:
@@ -66,8 +70,6 @@ async def protected_home(request: Request,background_task:BackgroundTasks,curren
                                      })
 
 
-
-
 @router.get("/search", tags=["search"])
 def search_movie(movie_id: str, user_id: Optional[int] = None, db: Session = Depends(get_db)):
     """
@@ -81,8 +83,18 @@ def search_movie(movie_id: str, user_id: Optional[int] = None, db: Session = Dep
     Returns:
         RedirectResponse: Redirects to the movie page.
     """
-    movie = db.query(Movies).filter(Movies.title == movie_id).first()
+    
+    movies = db.query(Movies).all()
+    movie_titles = [movie.title for movie in movies]
+
+    matched_movie, score = process.extractOne(movie_id, movie_titles, score_cutoff=60)
+
+    if not matched_movie:
+        raise HTTPException(status_code=404, detail="Movie not found")
+
+    movie = db.query(Movies).filter(Movies.title == matched_movie).first()
     movie_index = movie.index
+
     if user_id:
         return RedirectResponse(url=f"/m/{movie_index}/{user_id}")
     return RedirectResponse(url=f"/m/{movie_index}")

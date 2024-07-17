@@ -125,7 +125,7 @@
   <body class="text-light black-lite">
     <nav class="navbar navbar-dark navbar-expand-lg  fixed-top blur">
       <div class="container">
-        <a class="navbar-brand" href="/home/{{user.user_id}}">
+        <a class="navbar-brand" href="/home">
           🍿 <b>PopCorn</b> <span class="rounded p-1 text-dark" style="background-color: rgb(227, 101, 101);" ><b>Reviews</b></span>
         </a>
         
@@ -133,7 +133,11 @@
         <div class="d-flex justify-content-end">
           <form action="/search" method="get">
             <input type="search" placeholder="search" class="form-control me-2 search" name="movie_id">
+            {% if user %}
             <input type="hidden" value="{{user.user_id}}">
+            {%else%}
+            <input type="hidden" value="None">
+            {% endif %}
           </form>
           <ul class="navbar-nav ms-3">
             {% if user %}
@@ -142,9 +146,14 @@
                 {{user.username}}
               </a>
               <ul class="dropdown-menu">
-
                 <li >
-                  <a class="dropdown-item" href="/auth/logout">
+                  <a class="dropdown-item" href="/profile/u/{{user.user_id}}">
+                    <i class='bx bx-food-tag'></i>
+                    Profile
+                  </a>
+                </li>
+                <li >
+                  <a class="dropdown-item" href="/logout">
                     <i class="bx bx-power-off"></i>
                     logout
                   </a>
@@ -152,7 +161,7 @@
               </ul>
             </li>
             {%else%}
-                <a class="nav-link" href="/auth/login">
+                <a class="nav-link" href="/login">
                   <i class='bx bxs-user'></i> Sign in
                 </a>
             {%endif%}

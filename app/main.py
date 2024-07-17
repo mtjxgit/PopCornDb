@@ -19,10 +19,6 @@ app.include_router(home.router)
 app.include_router(profile.router)
 
 
-'''
-functionality >> aesthetics
-'''
-
 
 
 

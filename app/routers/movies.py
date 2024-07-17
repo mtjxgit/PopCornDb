@@ -44,8 +44,8 @@ def get_movie_details(
 
     is_in_watchlist = rating_record = user = False
     if user_id:
-        user = db.query(models.User).filter(
-            models.User.user_id == user_id
+        user = db.query(models.Users).filter(
+            models.Users.user_id == user_id
         ).first()
 
         is_in_watchlist = db.query(models.Watchlist).filter(
