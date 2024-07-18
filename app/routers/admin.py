@@ -53,7 +53,7 @@ def show_all_users(db: Session = Depends(get_db)):
     """
     Show all users.
     """
-    users = db.query(models.User).all()
+    users = db.query(models.Users).all()
     return users
 
 @router.post("/movie")

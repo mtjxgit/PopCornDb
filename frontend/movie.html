@@ -13,134 +13,10 @@
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+
     <title>🍿 {{movie_details.title}}</title>
 
-    <style>
-      .navbar.blur {
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(40px);
-        background-color: rgba(0, 0, 0, 0.15);
-      }
-
-      .form-control {
-        background: transparent;
-        border-radius: 20px;
-        border: #b5b5b5 1px solid;
-        padding: 3px 30px;
-      }
-
-      .form-control::placeholder {
-        color: #b5b5b5;
-      }
-
-      .form-control:focus {
-        background-color: rgba(255, 255, 255, 0.052);
-        border: none;
-        color: #fefefe;
-      }
-
-      .shadow {
-        text-shadow: 1px 1px 10px black;
-      }
-
-      .black {
-        background-color: black;
-      }
-
-      .black-lite {
-        background-color: rgb(20, 20, 20);
-      }
-
-      .hero-wrapper {
-        position: relative;
-        background-color: rgba(0, 0, 0, 0.512);
-      }
-
-      .hero-bg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        background-size: cover;
-        background-position: center;
-        filter: blur(80px);
-        -webkit-filter: blur(120px);
-      }
-
-      .hero {
-        position: relative; /* Ensure content is positioned correctly */
-        z-index: 1; /* Place content above blurred background */
-        padding: 60px 100px;
-      }
-
-      .rating-box {
-        padding: 5px 10px;
-        width: 70px;
-      }
-
-      .stars {
-        list-style-type: none;
-        padding: 0;
-        display: inline-block;
-        font-size: 1.2rem;
-      }
-      .stars li {
-        display: inline-block;
-        cursor: pointer;
-        color: #ffcc00;
-        transition: color 0.3s;
-      }
-
-      .stars li:hover ~ li {
-        color: white;
-      }
-
-      .rate {
-        background-color: hsla(0, 0%, 0%, 0.313);
-        padding: 30px;
-        border-radius: 30px;
-        border: None;
-        color: #fefefeaa;
-        margin-left: 15px;
-      }
-
-      .submit-rating {
-        border-radius: 18px;
-      }
-
-      .tag {
-        border: 1px solid rgba(255, 255, 255, 0.883);
-        font-weight: lighter;
-        color: rgba(255, 255, 255, 0.883);
-        font-size: xx-small;
-        border-radius: 20px;
-        padding: 5px;
-        margin-right: 5px;
-      }
-
-      .glass{
-        background: transparent;
-      }
-
-      .crew{
-        margin-top: 20px;
-        background-color: transparent;
-        color: white;
-      }
-
-      tr{
-        border-bottom: 1px #b5b5b5 solid;
-      }
-      td,th{
-        padding:10px ;
-      }
-      td{
-        color: #b5b5b5;
-      }
-
-    </style>
   </head>
   <body class="text-light black-lite">
     <nav class="navbar navbar-dark navbar-expand-lg  fixed-top blur">
@@ -219,7 +95,8 @@
                   {% endfor %}
                 </div>
       
-                <div class="col-3 d-flex justify-content-center">
+                <div class="col-3 d-flex flex-column align-items-center">
+                  <span><small style="font-size: xx-small;">I M D b - R A T I N G</small></span>
                   <h2 class="pt-2">🍿 {{movie_details.rating}}</h2>
                 </div>
               </div>
@@ -239,7 +116,7 @@
                     <th scope="row">Writers</th>
                     <td>{{ movie_details.writers }}</td>
                   </tr>
-                  <tr style="border-bottom: 0px;"">
+                  <tr style="border-bottom: 0px;">
                     <th scope="row">Stars</th>
                     <td>{{ movie_details.stars }}</td>
                   </tr>
@@ -267,42 +144,57 @@
           </div>
       
           <div class="col-2">
-            <div class="d-flex justify-content-center">
+            <div class="d-flex flex-column justify-content-center align-items-center">
+              <span><small style="font-size: xx-small;">Y O U R - R A T I N G</small></span>
               {% if rating != 0 %}
+
                 {% if rating == 3 %}
-                  <h2 class="pt-2">❤️‍🔥</h2>
+                <i class='bx bxs-happy-heart-eyes m-4' style="scale: 4;"></i>
                 {%endif%}
                 {% if rating == 2 %}
-                  <h2 class="pt-2">👍</h2>
+                  <i class='bx bxs-like'></i>
                   {%endif%}
                 {% if rating == 1 %}
-                  <h2 class="pt-2">👎</h2>
+                  <i class='bx bxs-dislike'></i>
                   {%endif%}
                 {% else %}
-                  <span text-warning><small>❤️‍🔥 👍 👎</small></span>
+                  <span text-warning><small>what do you think about this movie?</small></span>
+                  <form id="ratingForm" action="/m/{{ movie_details.index }}/{{ user.user_id }}/rate" method="post" class="pt-2">
+                    <input type="hidden" name="user_id" value="{{ user.user_id }}" />
+                    <input type="hidden" name="movie_id" value="{{ movie_details.index }}" />
+                    <input type="hidden" id="ratingInput" name="rating" />
+                    <div class="btn-group" role="group" aria-label="Emoji rating">
+                        <button type="button" class="btn btn-outline-secondary" onclick="submitRating(1)">
+                          <i class='bx bx-dislike'></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="submitRating(2)">
+                          <i class='bx bx-like'></i></button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="submitRating(3)">
+                          <i class='bx bx-happy-heart-eyes'></i>
+                        </button>
+                    </div>
+                </form>
+                
+                <script>
+                function submitRating(rating) {
+                    document.getElementById('ratingInput').value = rating;
+                    document.getElementById('ratingForm').submit();
+                }
+                </script>
               {% endif %}
             </div>
           
             <div class="p-3 align-items-center d-flex flex-column">
               {% if movie_details.ott %}
                 <span class="text-warning" style="font-size: x-small">S T R E A M I N G</span><br />
-                <img src="{{movie_details.ott_image}}" alt="" style="width: 120px" class="rounded" />
+                <img src="{{movie_details.ott_image}}" alt="" style="width: 120px" class="rounded"/>
+              {%else%}
+              <span class="text-warning" style="font-size: x-small">R E N T</span><br />
+              <img src="{{movie_details.ott_image}}" alt="" style="width: 120px" class="rounded"/>
               {% endif %}
             </div>
           
-            <div class="mt-5 rate">
-                <span class="text">React</span>
-                <form action="/m/{{ movie_details.index }}/{{ user.user_id }}/rate" method="post" class="pt-2">
-                    <input type="hidden" name="user_id" value="{{ user.user_id }}" />
-                    <input type="hidden" name="movie_id" value="{{ movie_details.index }}" />
-                    <select class="form-select form-select-lg mb-3" aria-label="Emoji rating" name="rating" required>
-                        <option value="1">👎</option>
-                        <option value="2">👍</option>
-                        <option value="3">❤️‍🔥</option>
-                    </select>
-                    <button class="btn btn-outline-warning mt-4 submit-rating">Submit rating</button>
-                </form>
-            </div>
+  
           </div>
         </div>
       </div>

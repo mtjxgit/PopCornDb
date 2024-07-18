@@ -20,7 +20,7 @@ from app.template_config import templates
 router = APIRouter(tags=["Home"])
 
 
-@router.get("/home")
+@router.get("/")
 async def protected_home(request: Request,background_task:BackgroundTasks,current_user: Annotated[User, Depends(get_current_active_user)],db: Session = Depends(get_db)):
 
     """

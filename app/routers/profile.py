@@ -24,7 +24,7 @@ def profile(uid: int, request: Request, db: Session = Depends(get_db)):
     Returns:
         TemplateResponse: The rendered template with user profile details.
     """
-    user = db.query(models.User).filter(models.User.user_id == uid).first()
+    user = db.query(models.Users).filter(models.Users.user_id == uid).first()
 
     watchlists = db.query(models.Watchlist).filter(models.Watchlist.user_id == uid).all()
 
@@ -63,7 +63,7 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
     Returns:
         dict: Confirmation message of user deletion.
     """
-    temp = db.query(models.User).filter(models.User.user_id == user_id).first()
+    temp = db.query(models.Users).filter(models.Users.user_id == user_id).first()
     if not temp:
         raise HTTPException(status_code=404, detail="User not found")
 

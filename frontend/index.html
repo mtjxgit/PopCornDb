@@ -9,6 +9,12 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
 
+    <style>
+      .test{
+        border-radius: 10px;
+        overflow: hidden;
+      }
+    </style>
     
 
   </head>
@@ -43,7 +49,7 @@
                   </a>
                 </li>
                 <li >
-                  <a class="dropdown-item" href="/logout">
+                  <a class="dropdown-item" href="/login">
                     <i class="bx bx-power-off"></i>
                     logout
                   </a>
@@ -61,17 +67,16 @@
     </nav>
 
     <div class="hero-wrapper pt-5">
-      <div class="hero-bg" style="background-image: url('{{news[7].image_url}}');"></div>
+      <div class="hero-bg" style="background-image: url('{{news[-2].image_url}}');"></div>
       <div class="container hero">
-        <div class="row g-0">
-              
+        <div class="row g-0 test">
               <div class="col-6 left-rounded">
                 <div id="carouselExampleCaptions" class="carousel slide">
                 
                   <div class="carousel-inner">
                     <div class="carousel-item active ">
                           <a href="{{news[3].href}}">
-                          <img class="d-block news left-rounded" src="{{news[3].image_url}}" alt="First slide">
+                          <img class="d-block news" src="{{news[3].image_url}}" alt="First slide">
                           <div class="carousel-caption d-none d-md-block news-overlay">
                             <h5 class="text-truncate">{{news[3].title}}</h5>
                             <p class="text-truncate muted"><small>{{news[4].desc}}</small></p>
@@ -79,10 +84,10 @@
                           </a>
                         </div>
 
-                    {% for item in news[:6] %}
+                    {% for item in news[:-2] %}
                           <div class="carousel-item">
                             <a href="{{item.href}}">
-                            <img src="{{item.image_url}}" class="d-block news left-rounded" alt="...">
+                            <img src="{{item.image_url}}" class="d-block news" alt="...">
                             <div class="carousel-caption d-none d-md-block news-overlay">
                               <h5 class="text-truncate">{{item.title}}</h5>
                               <p class="text-truncate muted"><small> {{item.desc}} </small></p>
@@ -105,13 +110,13 @@
                 </div>
               </div>
               <div class="col-3">
-                <a href="{{news[7].href}}" style="text-decoration: None;">
-                  <div class="card text-light black middle-square">
-                    <img class="card-img-top middle-square" src="{{ news[7].image_url }}" alt="Card image">
+                <a href="{{news[-2].href}}" style="text-decoration: None;">
+                  <div class="card text-light black ">
+                    <img class="card-img-top news-image" src="{{ news[-2].image_url }}" alt="Card image">
                     <div class="card-body news-overlay">
                       
-                        <h5 class="card-title text-truncate">{{ news[7].title }}</h5>
-                        <p class="card-text text-truncate muted"><small>{{ news[7].desc }}</small></p>
+                        <h5 class="card-title text-truncate">{{ news[-2].title }}</h5>
+                        <p class="card-text text-truncate muted"><small>{{ news[-2].desc }}</small></p>
                       
                     </div>
                   </div>
@@ -119,13 +124,13 @@
               </div>
 
               <div class="col-3">
-                <a href="{{news[8].href}}" style="text-decoration: None;">
-                  <div class="card text-light black right-rounded">
-                    <img class="card-img-top right-rounded" src="{{ news[8].image_url }}" alt="Card image">
+                <a href="{{news[-1].href}}" style="text-decoration: None;">
+                  <div class="card text-light black">
+                    <img class="card-img-top news-image" src="{{ news[-1].image_url }}" alt="Card image">
                     <div class="card-body news-overlay">
                       
-                        <h5 class="card-title text-truncate">{{ news[8].title }}</h5>
-                        <p class="card-text text-truncate muted"><small>{{ news[8].desc }}</small></p>
+                        <h5 class="card-title text-truncate">{{ news[-1].title }}</h5>
+                        <p class="card-text text-truncate muted"><small>{{ news[-1].desc }}</small></p>
                       
                     </div>
                   </div>
@@ -140,7 +145,7 @@
         <span style="white-space: pre;" class="text-warning">W H A T    T O    W A T C H</span>
       </div>
 
-      {% if user %}
+      {% if watchlist|length != 0 %}
       <section class="text-light">
         <div class="container mt-3">
             <h4 class="text mb-4">

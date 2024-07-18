@@ -25,17 +25,14 @@ def scrape():
     rotten_tomatoes = BeautifulSoup(driver.page_source,'html.parser')
     r_news = rotten_tomatoes.find_all('a',class_="article")
 
-    counter = 0
-    limiter_value = 7
+    
     for news in r_news:
         image_url = news.find("img").get("src")
         title = news.find("h2").text
         desc = news.find("p").text
         href = news.get("href")
         news_list.append([title, desc, image_url, href])
-        counter += 1
-        if counter == limiter_value:
-            break
+        
 
     spotlights = []
     spotlights.append(rotten_tomatoes.find("a", id="spotlight1"))

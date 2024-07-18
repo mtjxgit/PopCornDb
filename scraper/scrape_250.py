@@ -14,7 +14,7 @@ import movie
 # Initialize the Chrome driver
 chrome_options = Options()
 chrome_options.add_argument("--headless")
-driver = webdriver.Chrome(options=chrome_options)
+driver = webdriver.Chrome()
 driver.get('https://www.imdb.com/chart/top/?ref_=nv_mv_250')
 
 # Scroll to the bottom of the page to load all content

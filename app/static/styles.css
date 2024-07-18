@@ -98,36 +98,118 @@
           left: 0%;
           bottom: 0%;
           height: 88px;
-          border-bottom-left-radius: 20px;
         }
 
-        .left-rounded {
-            border-top-left-radius: 20px;
-            border-bottom-left-radius: 20px;
-            border-top-right-radius: 0px;
-            border-bottom-right-radius: 0px;
-            
+        .news-image{
+          border-radius: 0px;
         }
-
-        .middle-square {
-            border-radius: 0px;
-            
-        }
-
-        .right-rounded {
-            border-top-left-radius: 0px;
-            border-bottom-left-radius: 0px;
-            border-top-right-radius: 20px;
-            border-bottom-right-radius: 20px;
-            
-        }
+        
 
         a{
           text-decoration: none;
         }
 
         .news{
-          height: 337px;
+          height: 314px;
         }
 
-
+        .shadow {
+          text-shadow: 1px 1px 10px black;
+        }
+  
+        .black {
+          background-color: black;
+        }
+  
+        .black-lite {
+          background-color: rgb(20, 20, 20);
+        }
+  
+        .hero-wrapper {
+          position: relative;
+          background-color: rgba(0, 0, 0, 0.512);
+        }
+  
+        .hero-bg {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: -1;
+          background-size: cover;
+          background-position: center;
+          filter: blur(80px);
+          -webkit-filter: blur(120px);
+        }
+  
+        .hero {
+          position: relative; /* Ensure content is positioned correctly */
+          z-index: 1; /* Place content above blurred background */
+          padding: 60px 100px;
+        }
+  
+        .rating-box {
+          padding: 5px 10px;
+          width: 70px;
+        }
+  
+        .stars {
+          list-style-type: none;
+          padding: 0;
+          display: inline-block;
+          font-size: 1.2rem;
+        }
+        .stars li {
+          display: inline-block;
+          cursor: pointer;
+          color: #ffcc00;
+          transition: color 0.3s;
+        }
+  
+        .stars li:hover ~ li {
+          color: white;
+        }
+  
+        .rate {
+          background-color: hsla(0, 0%, 0%, 0.313);
+          padding: 30px;
+          border-radius: 30px;
+          border: None;
+          color: #fefefeaa;
+          margin-left: 15px;
+        }
+  
+        .submit-rating {
+          border-radius: 18px;
+        }
+  
+        .tag {
+          border: 1px solid rgba(255, 255, 255, 0.883);
+          font-weight: lighter;
+          color: rgba(255, 255, 255, 0.883);
+          font-size: xx-small;
+          border-radius: 20px;
+          padding: 5px;
+          margin-right: 5px;
+        }
+  
+        .glass{
+          background: transparent;
+        }
+  
+        .crew{
+          margin-top: 20px;
+          background-color: transparent;
+          color: white;
+        }
+  
+        tr{
+          border-bottom: 1px #b5b5b5 solid;
+        }
+        td,th{
+          padding:10px ;
+        }
+        td{
+          color: #b5b5b5;
+        }
