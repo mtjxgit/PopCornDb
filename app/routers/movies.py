@@ -2,23 +2,23 @@
 This module contains the routes for movie details, adding to watchlist, and rating movies.
 """
 
-from typing import Optional
+from typing import Optional,Annotated
 from fastapi import Depends, Request, HTTPException, Form, APIRouter
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from ..database.database import get_db
 from ..models import models
+from app.schemas.user import User
 from app.template_config import templates
-
+from app.security.security import get_current_active_user
 router = APIRouter(prefix="/m", tags=["Movies"])
 
 @router.get("/{movie_id}")
-@router.get("/{movie_id}/{user_id}")
 def get_movie_details(
     movie_id: int,
     request: Request,
-    db: Session = Depends(get_db),
-    user_id: Optional[int] = None
+    current_user: Annotated[User, Depends(get_current_active_user)],
+    db: Session = Depends(get_db)
 ):
     """
     Fetches and returns movie details.
@@ -32,6 +32,8 @@ def get_movie_details(
     Returns:
         TemplateResponse: The rendered template with movie details.
     """
+
+    user = db.query(models.Users).filter(models.Users.username == current_user.username).first()
     movie = db.query(models.Movies).filter(
         models.Movies.index == movie_id
     ).first()
@@ -41,23 +43,21 @@ def get_movie_details(
             status_code=404, detail="Movie not found"
         )
 
-    is_in_watchlist = rating_record = user = False
-    if user_id:
-        user = db.query(models.Users).filter(
-            models.Users.user_id == user_id
-        ).first()
-
+    if user:
+        
         is_in_watchlist = db.query(models.Watchlist).filter(
-            models.Watchlist.user_id == user_id,
+            models.Watchlist.user_id == user.user_id,
             models.Watchlist.movie_id == movie_id
         ).first() is not None
 
         rating_record = db.query(models.Ratings).filter(
             models.Ratings.movie_id == movie_id,
-            models.Ratings.user_id == user_id
+            models.Ratings.user_id == user.user_id
         ).first()
+    else:
+        is_in_watchlist = rating_record = user = False
 
-    rating = rating_record.rating if rating_record else 0
+    rating = rating_record.rating if rating_record else False
 
     return templates.TemplateResponse(
         "movie.html",
@@ -71,8 +71,12 @@ def get_movie_details(
     )
 
 
-@router.post("/{m_id}/{u_id}/watchlist")
-def add_to_watchlist(m_id: int, u_id: int, db: Session = Depends(get_db)):
+@router.post("/{m_id}/watchlist")
+def add_to_watchlist(
+    m_id: int,
+    current_user: Annotated[User,Depends(get_current_active_user)],
+    db: Session = Depends(get_db)):
+
     """
     Adds a movie to the user's watchlist.
 
@@ -84,18 +88,19 @@ def add_to_watchlist(m_id: int, u_id: int, db: Session = Depends(get_db)):
     Returns:
         RedirectResponse: Redirects to the movie details page.
     """
-    new = models.Watchlist(user_id=u_id, movie_id=m_id)
+    user = db.query(models.Users).filter(models.Users.username==current_user.username).first()
+    new = models.Watchlist(user_id=user.user_id, movie_id=m_id)
     db.add(new)
     db.commit()
-    url = f"/m/{m_id}/{u_id}"
+    url = f"/m/{m_id}"
     response = RedirectResponse(url=url, status_code=303)
     return response
 
 
-@router.post("/{m_id}/{u_id}/rate")
+@router.post("/{m_id}/rate")
 def add_rating(
     m_id: int,
-    u_id: int,
+    current_user: Annotated[User, Depends(get_current_active_user)],
     rating: float = Form(...),
     db: Session = Depends(get_db)
 ):
@@ -111,9 +116,11 @@ def add_rating(
     Returns:
         RedirectResponse: Redirects to the movie details page.
     """
-    new_rating = models.Ratings(movie_id=m_id, user_id=u_id, rating=rating)
-    db.add(new_rating)
-    db.commit()
-    url = f"/m/{m_id}/{u_id}"
-    response = RedirectResponse(url=url, status_code=303)
-    return response
+    if current_user:
+        user = db.query(models.Users).filter(models.Users.username==current_user.username).first()
+        new_rating = models.Ratings(movie_id=m_id, user_id= user.user_id, rating=rating)
+        db.add(new_rating)
+        db.commit()
+        url = f"/m/{m_id}"
+        response = RedirectResponse(url=url, status_code=303)
+        return response

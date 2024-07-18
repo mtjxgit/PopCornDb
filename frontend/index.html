@@ -21,7 +21,7 @@
   <body class="text-bg-dark">
     <nav class="navbar navbar-dark navbar-expand-lg  fixed-top blur">
       <div class="container">
-        <a class="navbar-brand" href="/home">
+        <a class="navbar-brand" href="/">
           🍿 <b>PopCorn</b> <span class="rounded p-1 text-dark" style="background-color: rgb(227, 101, 101);" ><b>Reviews</b></span>
         </a>
         
@@ -158,11 +158,10 @@
           <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-4 overflow-auto flex-nowrap" id="movies-container">
                 {% for item in watchlist %}
               <div class="col">
-                  {% if user %}
-                  <a href="/m/{{ item.index }}/{{user.user_id}}" class="text-decoration-none">
-                  {% else %}
-                  <a href="/m/{{ item.index }}" class="text-decoration-none"></a>
-                  {% endif %}  
+     
+            
+                  <a href="/m/{{ item.index }}" class="text-decoration-none">
+                  
                   <div class="card  text-light black-lite h-100">
                     <img src="{{item.image_url}}" class="card-img-top" alt="Movie 1">
                     <div class="card-body">
@@ -191,11 +190,10 @@
           <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-4 overflow-auto flex-nowrap" id="movies-container">
                 {% for item in topten %}
               <div class="col">
-                {% if user %}
-                <a href="/m/{{ item.index }}/{{user.user_id}}" class="text-decoration-none">
-                {% else %}
-                <a href="/m/{{ item.index }}" class="text-decoration-none"></a>
-                {% endif %}  
+
+        
+                <a href="/m/{{ item.index }}" class="text-decoration-none">
+                
                   <div class="card  text-light black-lite h-100">
                     <img src="{{item.image_url}}" class="card-img-top" alt="Movie 1">
                     <div class="card-body ">
@@ -234,11 +232,10 @@
                   <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-4 mt-2" id="movies-container">
                       {% for item in all[12:30] %}
                       <div class="col">
-                        {% if user %}
-                        <a href="/m/{{ item.index }}/{{user.user_id}}" class="text-decoration-none">
-                        {% else %}
-                        <a href="/m/{{ item.index }}" class="text-decoration-none"></a>
-                        {% endif %}  
+                        
+                        
+                        <a href="/m/{{ item.index }}" class="text-decoration-none">
+
                               <div class="card black-lite text-light h-100">
                                   <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.title }}">
                                   <div class="card-body">
@@ -259,11 +256,10 @@
                       {% for item in all %}
                       {% if item.ott == ott %}
                       <div class="col">
-                        {% if user %}
-                        <a href="/m/{{ item.index }}/{{user.user_id}}" class="text-decoration-none">
-                        {% else %}
-                        <a href="/m/{{ item.index }}" class="text-decoration-none"></a>
-                        {% endif %}  
+                        
+                        
+                        <a href="/m/{{ item.index }}" class="text-decoration-none">
+                        
                               <div class="card black-lite text-light h-100">
                                   <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.title }}">
                                   <div class="card-body">

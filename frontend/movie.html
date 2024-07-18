@@ -21,13 +21,13 @@
   <body class="text-light black-lite">
     <nav class="navbar navbar-dark navbar-expand-lg  fixed-top blur">
       <div class="container">
-        <a class="navbar-brand" href="/home">
+        <a class="navbar-brand" href="/">
           🍿 <b>PopCorn</b> <span class="rounded p-1 text-dark" style="background-color: rgb(227, 101, 101);" ><b>Reviews</b></span>
         </a>
         
         
         <div class="d-flex justify-content-end">
-          <form action="/search" method="get">
+          <form action="/search" method="get" >
             <input type="search" placeholder="search" class="form-control me-2 search" name="movie_id">
             {% if user %}
             <input type="hidden" value="{{user.user_id}}">
@@ -49,7 +49,7 @@
                   </a>
                 </li>
                 <li >
-                  <a class="dropdown-item" href="/logout">
+                  <a class="dropdown-item" href="/login">
                     <i class="bx bx-power-off"></i>
                     logout
                   </a>
@@ -102,7 +102,7 @@
               </div>
       
               <div class="mt-5 p-0">
-                <span class="shadow">{{movie_details.desc}}</span>
+                <span class="shadow"><b>{{movie_details.desc}}</b></span>
               </div>
 
               <table class="crew">
@@ -131,7 +131,7 @@
                   <i class="bx bxs-bookmark"><span style="font-weight: bolder">Already in Watchlist</span></i>
                 </button>
                 {% else %}
-                <form id="watchlist-form" action="/m/{{ movie_details.index }}/{{ user.user_id }}/watchlist" method="post">
+                <form id="watchlist-form" action="/m/{{ movie_details.index }}/watchlist" method="post">
                   <input type="hidden" name="user_id" value="{{ user.user_id }}" />
                   <input type="hidden" name="movie_id" value="{{ movie_details.index }}" />
                   <button type="submit" class="btn btn-outline-warning mt-2 btn-block" style="width: 350px">
@@ -149,17 +149,17 @@
               {% if rating != 0 %}
 
                 {% if rating == 3 %}
-                <i class='bx bxs-happy-heart-eyes m-4' style="scale: 4;"></i>
+                <i class='bx bxs-happy-heart-eyes m-4' style="scale: 3;"></i>
                 {%endif%}
                 {% if rating == 2 %}
-                  <i class='bx bxs-like'></i>
+                  <i class='bx bxs-like m-4' style="scale: 3;"></i>
                   {%endif%}
                 {% if rating == 1 %}
-                  <i class='bx bxs-dislike'></i>
+                  <i class='bx bxs-dislike m-4' style="scale: 3;"></i>
                   {%endif%}
                 {% else %}
-                  <span text-warning><small>what do you think about this movie?</small></span>
-                  <form id="ratingForm" action="/m/{{ movie_details.index }}/{{ user.user_id }}/rate" method="post" class="pt-2">
+                  <span style="font-size: xx-small;font-weight: bold;">what do you think about this movie?</span>
+                  <form id="ratingForm" action="/m/{{ movie_details.index }}/rate" method="post" class="pt-2">
                     <input type="hidden" name="user_id" value="{{ user.user_id }}" />
                     <input type="hidden" name="movie_id" value="{{ movie_details.index }}" />
                     <input type="hidden" id="ratingInput" name="rating" />

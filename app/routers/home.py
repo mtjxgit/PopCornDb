@@ -71,7 +71,7 @@ async def protected_home(request: Request,background_task:BackgroundTasks,curren
 
 
 @router.get("/search", tags=["search"])
-def search_movie(movie_id: str, user_id: Optional[int] = None, db: Session = Depends(get_db)):
+def search_movie(movie_id: str, db: Session = Depends(get_db)):
     """
     Search route that redirects to the movie page.
 
@@ -94,7 +94,4 @@ def search_movie(movie_id: str, user_id: Optional[int] = None, db: Session = Dep
 
     movie = db.query(Movies).filter(Movies.title == matched_movie).first()
     movie_index = movie.index
-
-    if user_id:
-        return RedirectResponse(url=f"/m/{movie_index}/{user_id}")
     return RedirectResponse(url=f"/m/{movie_index}")
