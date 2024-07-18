@@ -32,8 +32,7 @@ def get_movie_details(
     Returns:
         TemplateResponse: The rendered template with movie details.
     """
-
-    user = db.query(models.Users).filter(models.Users.username == current_user.username).first()
+        
     movie = db.query(models.Movies).filter(
         models.Movies.index == movie_id
     ).first()
@@ -43,8 +42,8 @@ def get_movie_details(
             status_code=404, detail="Movie not found"
         )
 
-    if user:
-        
+    if current_user:
+        user = db.query(models.Users).filter(models.Users.username == current_user.username).first()
         is_in_watchlist = db.query(models.Watchlist).filter(
             models.Watchlist.user_id == user.user_id,
             models.Watchlist.movie_id == movie_id
