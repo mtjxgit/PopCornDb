@@ -55,7 +55,7 @@ async def login(request: Request, form_data: Annotated[OAuth2PasswordRequestForm
         data={"sub": user.username}, expires_delta=access_token_expires
     )
 
-    response = RedirectResponse(url="/home", status_code=status.HTTP_303_SEE_OTHER)
+    response = RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
     response.set_cookie(key="access_token", value=access_token, httponly=True)
     return response
 
